@@ -13,7 +13,7 @@ namespace EmployeeManagement
 
             // Add services to the container.
 
-            builder.Services.AddControllers();
+            builder.Services.AddControllers().AddNewtonsoftJson();
             builder.Services.AddDbContext<EmployeeDbContext>(
                           options => options.UseSqlServer(builder.Configuration.GetConnectionString("EmployeeDB")));
 
