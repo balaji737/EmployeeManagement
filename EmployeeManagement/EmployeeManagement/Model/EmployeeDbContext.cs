@@ -9,13 +9,13 @@ namespace EmployeeManagement.Model
         { 
         }
 
-        //protected override void OnModelCreating(ModelBuilder modelBuilder)
-        //{
-        //    modelBuilder.Entity<Employee>()
-        //                .Property(employee => employee.Id)
-        //                .ValueGenerationOnAdd();
-                        
-        //}
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Employee>()
+                        .Property(employee => employee.Id)
+                        .ValueGeneratedOnAdd();
+
+        }
 
         public DbSet<Employee> employees { get; set;}
     }
