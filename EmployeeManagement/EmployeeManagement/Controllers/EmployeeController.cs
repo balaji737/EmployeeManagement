@@ -7,5 +7,6 @@ namespace EmployeeManagement.Controllers
     [ApiController]
     public class EmployeeController : ControllerBase
     {
+
     }
 }

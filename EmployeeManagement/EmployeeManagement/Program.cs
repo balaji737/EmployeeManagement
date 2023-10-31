@@ -1,4 +1,6 @@
 
+using EmployeeManagement.Repository;
+
 namespace EmployeeManagement
 {
     public class Program
@@ -10,6 +12,9 @@ namespace EmployeeManagement
             // Add services to the container.
 
             builder.Services.AddControllers();
+            builder.Services.AddTransient<IEmployeeRepository, EmployeeRepository>();
+
+
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
