@@ -1,5 +1,7 @@
 
+using EmployeeManagement.Model;
 using EmployeeManagement.Repository;
+using Microsoft.EntityFrameworkCore;
 
 namespace EmployeeManagement
 {
@@ -12,6 +14,9 @@ namespace EmployeeManagement
             // Add services to the container.
 
             builder.Services.AddControllers();
+            builder.Services.AddDbContext<EmployeeDbContext>(
+                          options => options.UseSqlServer(builder.Configuration.GetConnectionString("EmployeeDB")));
+
             builder.Services.AddTransient<IEmployeeRepository, EmployeeRepository>();
 
 
