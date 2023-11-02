@@ -17,20 +17,20 @@ namespace EmployeeManagement.Repository
 
         public async Task<List<Employee>> GetAllEmployeesDetails()
         {
-            var records = await _context.employees.ToListAsync();
+            var records = await _context.Employees.ToListAsync();
             return records;
         }
 
         public async Task<Employee> GetEmployeesById(int id)
         {
-            var employeesInfo = await _context.employees.FindAsync(id);
+            var employeesInfo = await _context.Employees.FindAsync(id);
             return _mapper.Map<Employee>(employeesInfo);
            
         }
 
         public async Task<bool> GetUniqueEmployee(string name)
         {
-            return await _context.employees.AnyAsync(employees => employees.Name == name);
+            return await _context.Employees.AnyAsync(employees => employees.Name == name);
         }
 
         public async Task<int> AddEmployee(Employee employee)
@@ -41,14 +41,14 @@ namespace EmployeeManagement.Repository
             }
             employee.CreatedDate = DateTime.Now;
 
-            _context.employees.Add(employee);
+            _context.Employees.Add(employee);
             await _context.SaveChangesAsync();
             return employee.Id;
         }
 
-        public async Task<Employee> UpdateEmployee(int id, Employee employee)
+        public async Task<Employee> EntireResourceUpdateInEmployee(int id, Employee employee)
         {
-            var currentEmployee = await _context.employees.FindAsync(id);
+            var currentEmployee = await _context.Employees.FindAsync(id);
 
             if(currentEmployee == null)
             {
@@ -60,9 +60,9 @@ namespace EmployeeManagement.Repository
             return _mapper.Map<Employee>(currentEmployee);
         }
 
-        public async Task<Employee> UpdateEmployeePatch(int id, Employee employee)
+        public async Task<Employee> PartialResourceUpdateInEmployee(int id, Employee employee)
         {
-            var updatedEmployee = await _context.employees.FindAsync(id);
+            var updatedEmployee = await _context.Employees.FindAsync(id);
 
             if (updatedEmployee == null)
             {
@@ -78,11 +78,11 @@ namespace EmployeeManagement.Repository
 
         public async Task DeleteEmployee(int id)
         {
-            var curentEmployee = await _context.employees.FindAsync(id);
+            var curentEmployee = await _context.Employees.FindAsync(id);
 
             if (curentEmployee != null)
             {
-                _context.employees.Remove(curentEmployee);
+                _context.Employees.Remove(curentEmployee);
                 await _context.SaveChangesAsync();
             }
             else

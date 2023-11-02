@@ -58,7 +58,7 @@ namespace EmployeeManagement.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateEmployeeUsingPut([FromBody] Employee employee, [FromRoute] int id)
         {
-            var updatedEmployee = await _employeeRepository.UpdateEmployee(id, employee);
+            var updatedEmployee = await _employeeRepository.EntireResourceUpdateInEmployee(id, employee);
 
             if (updatedEmployee == null)
             {
@@ -67,7 +67,7 @@ namespace EmployeeManagement.Controllers
             return Ok(updatedEmployee);
         }
 
-        [HttpPatch("{id}")]
+        [HttpPatch("{id}")]//jsondocument to do
         public async Task<IActionResult> UpdateEmployeeUsingPatch([FromRoute] int id, [FromBody] Employee employee)
         {
             if (!ModelState.IsValid)
@@ -75,7 +75,7 @@ namespace EmployeeManagement.Controllers
                 return BadRequest(ModelState);
             }
 
-            var updatedEmployee = await _employeeRepository.UpdateEmployeePatch(id, employee);
+            var updatedEmployee = await _employeeRepository.PartialResourceUpdateInEmployee(id, employee);
 
             if(updatedEmployee == null)
             {
