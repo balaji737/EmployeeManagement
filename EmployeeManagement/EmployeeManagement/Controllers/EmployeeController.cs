@@ -41,17 +41,17 @@ namespace EmployeeManagement.Controllers
             return Ok(employees);
         }
 
-        [HttpPost()]
+        [HttpPost]
         public async Task<IActionResult> AddNewEmployee([FromBody] Employee employee)
         {
             try
             {
                 var newEmployeeId = await _employeeRepository.AddEmployee(employee);
-                return CreatedAtAction(nameof(GetEmployeeById), new {id = newEmployeeId });
+                return CreatedAtAction(nameof(GetEmployeeById), new {id = newEmployeeId, Controller = "Employee" }, newEmployeeId);
             }
             catch (Exception ex)
             {
-                return Conflict(ex.Message);
+                return BadRequest("Invalid request data");
             }
         }
 
