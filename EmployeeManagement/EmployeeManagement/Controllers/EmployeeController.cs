@@ -19,7 +19,7 @@ namespace EmployeeManagement.Controllers
         public async Task<IActionResult> GetAllEmployees()
         {
             var employees = await _employeeRepository.GetAllEmployeesDetails();
-            if (employees != null && employees.Any())
+            if (employees != null && employees.Count() > 0)
             {
                 return Ok(employees);
             }
