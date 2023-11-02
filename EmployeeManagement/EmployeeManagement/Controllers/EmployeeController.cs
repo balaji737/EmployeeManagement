@@ -1,4 +1,5 @@
-﻿using EmployeeManagement.Repository;
+﻿using EmployeeManagement.Model;
+using EmployeeManagement.Repository;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -38,7 +39,63 @@ namespace EmployeeManagement.Controllers
                 return NotFound();
             }
             return Ok(employees);
+        }
 
+        [HttpPost()]
+        public async Task<IActionResult> AddNewEmployee([FromBody] Employee employee)
+        {
+            try
+            {
+                var newEmployeeId = await _employeeRepository.AddEmployee(employee);
+                return CreatedAtAction(nameof(GetEmployeeById), new {id = newEmployeeId });
+            }
+            catch (Exception ex)
+            {
+                return Conflict(ex.Message);
+            }
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateEmployeeUsingPut([FromBody] Employee employee, [FromRoute] int id)
+        {
+            var updatedEmployee = await _employeeRepository.UpdateEmployee(id, employee);
+
+            if (updatedEmployee == null)
+            {
+                return NotFound();
+            }
+            return Ok(updatedEmployee);
+        }
+
+        [HttpPatch("{id}")]
+        public async Task<IActionResult> UpdateEmployeeUsingPatch([FromRoute] int id, [FromBody] Employee employee)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var updatedEmployee = await _employeeRepository.UpdateEmployeePatch(id, employee);
+
+            if(updatedEmployee == null)
+            {
+                return NotFound();
+            }
+            return Ok(updatedEmployee);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteEmployee([FromRoute] int id)
+        {
+            try
+            {
+                await _employeeRepository.DeleteEmployee(id);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return NotFound();
+            }
         }
     }
 }
