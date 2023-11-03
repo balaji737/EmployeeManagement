@@ -11,7 +11,7 @@ namespace EmployeeManagement.Controllers
     public class EmployeeController : ControllerBase
     {
         private readonly IEmployeeRepository _employeeRepository;
-
+       
         public EmployeeController(IEmployeeRepository employeeRepository)
         {
             _employeeRepository = employeeRepository;
@@ -48,7 +48,7 @@ namespace EmployeeManagement.Controllers
             try
             {
                 var newEmployeeId = await _employeeRepository.AddEmployee(employee);
-                return CreatedAtAction(nameof(GetEmployeeById), new {id = newEmployeeId, Controller = "Employee" }, newEmployeeId);
+                return CreatedAtAction(nameof(GetEmployeeById), new { id = newEmployeeId, Controller = "Employee" }, newEmployeeId);
             }
             catch (Exception ex)
             {
@@ -59,13 +59,25 @@ namespace EmployeeManagement.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateAllElementsInEmployee([FromBody] Employee employee, [FromRoute] int id)
         {
-            var updatedEmployee = await _employeeRepository.EntireResourceUpdateInEmployee(id, employee);
-
-            if (updatedEmployee == null)
+            if (!ModelState.IsValid)
             {
-                return NotFound();
+                return BadRequest(ModelState);
             }
-            return Ok(updatedEmployee);
+            try
+            {
+                var updatedEmployee = await _employeeRepository.EntireResourceUpdateInEmployee(id, employee);
+
+                if (updatedEmployee == null)
+                {
+                    return NotFound();
+                }
+
+                return Ok(updatedEmployee);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("An error occurred while processing the request.");
+            }
         }
 
         [HttpPatch("{id}")]
