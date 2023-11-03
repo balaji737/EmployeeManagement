@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using EmployeeManagement.Model;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.EntityFrameworkCore;
 
 namespace EmployeeManagement.Repository
@@ -60,7 +61,7 @@ namespace EmployeeManagement.Repository
             return _mapper.Map<Employee>(currentEmployee);
         }
 
-        public async Task<Employee> PartialResourceUpdateInEmployee(int id, Employee employee)
+        public async Task<Employee> PartialResourceUpdateInEmployee(int id, JsonPatchDocument<Employee> employee)
         {
             var updatedEmployee = await _context.Employees.FindAsync(id);
 
@@ -68,11 +69,10 @@ namespace EmployeeManagement.Repository
             {
                 return null;
             }
-            if(employee.Department != null)
-            {
-                updatedEmployee.Department = employee.Department;
-                updatedEmployee.UpdatedDate = DateTime.Now;
-            }
+            employee.ApplyTo(updatedEmployee);
+            updatedEmployee.UpdatedDate = DateTime.Now;
+
+            await _context.SaveChangesAsync();
             return updatedEmployee;
         }
 

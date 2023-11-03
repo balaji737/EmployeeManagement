@@ -1,6 +1,7 @@
 ﻿using EmployeeManagement.Model;
 using EmployeeManagement.Repository;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EmployeeManagement.Controllers
@@ -67,20 +68,21 @@ namespace EmployeeManagement.Controllers
             return Ok(updatedEmployee);
         }
 
-        [HttpPatch("{id}")]//jsondocument to do
-        public async Task<IActionResult> UpdateParticularElementInEmployee([FromRoute] int id, [FromBody] Employee employee)
+        [HttpPatch("{id}")]
+        public async Task<IActionResult> UpdateParticularElementInEmployee([FromRoute] int id, [FromBody] JsonPatchDocument<Employee> employee)
         {
-            if (!ModelState.IsValid)
+            if (employee == null)
             {
-                return BadRequest(ModelState);
+                return BadRequest(employee);
             }
 
             var updatedEmployee = await _employeeRepository.PartialResourceUpdateInEmployee(id, employee);
 
-            if(updatedEmployee == null)
+            if (updatedEmployee == null)
             {
                 return NotFound();
             }
+
             return Ok(updatedEmployee);
         }
 
