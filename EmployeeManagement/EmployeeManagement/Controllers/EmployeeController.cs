@@ -56,7 +56,7 @@ namespace EmployeeManagement.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateEmployeeUsingPut([FromBody] Employee employee, [FromRoute] int id)
+        public async Task<IActionResult> UpdateAllElementsInEmployee([FromBody] Employee employee, [FromRoute] int id)
         {
             var updatedEmployee = await _employeeRepository.EntireResourceUpdateInEmployee(id, employee);
 
@@ -68,7 +68,7 @@ namespace EmployeeManagement.Controllers
         }
 
         [HttpPatch("{id}")]//jsondocument to do
-        public async Task<IActionResult> UpdateEmployeeUsingPatch([FromRoute] int id, [FromBody] Employee employee)
+        public async Task<IActionResult> UpdateParticularElementInEmployee([FromRoute] int id, [FromBody] Employee employee)
         {
             if (!ModelState.IsValid)
             {
