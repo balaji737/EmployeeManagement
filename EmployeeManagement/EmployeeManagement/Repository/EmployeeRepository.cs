@@ -41,8 +41,8 @@ namespace EmployeeManagement.Repository
                 throw new Exception("Employee with similar name already exists.");
             }
             employee.CreatedDate = DateTime.Now;
-
             _context.Employees.Add(employee);
+
             await _context.SaveChangesAsync();
             return employee.Id;
         }
@@ -55,10 +55,13 @@ namespace EmployeeManagement.Repository
             {
                 return null;
             }
+           
             employee.UpdatedDate = DateTime.Now;
+            _context.Employees.Add(employee);
 
             await _context.SaveChangesAsync();
-            return _mapper.Map<Employee>(currentEmployee);
+            return currentEmployee;
+            //return _mapper.Map<Employee>(currentEmployee);
         }
 
         public async Task<Employee> PartialResourceUpdateInEmployee(int id, JsonPatchDocument<Employee> employee)
